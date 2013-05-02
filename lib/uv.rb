@@ -49,8 +49,6 @@ module Uv
   end
 
   def self.syntax_for_file(file_name)
-    init_syntaxes unless @syntaxes
-
     # get first non-empty line
     first_line = ""
     File.open( file_name, 'r' ) { |f|
@@ -60,7 +58,8 @@ module Uv
 
     # find syntax by file-extension
     result = []
-    @syntaxes.each do |key, syntax|
+    self.syntaxes.each do |key|
+      syntax = self.syntax_node_for(key)
       assigned = false
       if syntax.fileTypes
         syntax.fileTypes.each do |t|
